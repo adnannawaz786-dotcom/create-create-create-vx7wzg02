@@ -4,7 +4,7 @@ import { Play, Pause, SkipBack, SkipForward, Volume2, VolumeX, Repeat, Shuffle }
 import { Button } from '@/components/ui/button';
 import { Slider } from '@/components/ui/slider';
 import { Card } from '@/components/ui/card';
-import { createAudioContext, createAnalyzer, drawVisualization } from '@/lib/audio-utils';
+import { initializeAudioContext, drawVisualization } from '@/lib/audio-utils';
 
 const AudioPlayer = ({ playlist = [], currentTrackIndex = 0, onTrackChange }) => {
   const [isPlaying, setIsPlaying] = useState(false);
