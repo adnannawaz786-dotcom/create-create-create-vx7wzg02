@@ -1,0 +1,394 @@
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+/* CSS Reset and Base Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 1.6;
+  color: #ffffff;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* Custom Properties for Design System */
+:root {
+  --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  --secondary-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  --accent-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+  --glass-bg: rgba(255, 255, 255, 0.1);
+  --glass-border: rgba(255, 255, 255, 0.2);
+  --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+  --backdrop-blur: blur(20px);
+  --border-radius: 16px;
+  --animation-speed: 0.3s;
+  --hover-scale: 1.02;
+  --active-scale: 0.98;
+}
+
+/* Glassmorphism Base Classes */
+.glass {
+  background: var(--glass-bg);
+  backdrop-filter: var(--backdrop-blur);
+  -webkit-backdrop-filter: var(--backdrop-blur);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--border-radius);
+  box-shadow: var(--glass-shadow);
+}
+
+.glass-card {
+  @apply glass p-6 transition-all duration-300 hover:shadow-2xl hover:scale-105;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.glass-button {
+  @apply glass px-6 py-3 text-white font-medium transition-all duration-300 cursor-pointer;
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+}
+
+.glass-button:hover {
+  background: rgba(255, 255, 255, 0.25);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 40px 0 rgba(31, 38, 135, 0.5);
+}
+
+.glass-button:active {
+  transform: translateY(0);
+}
+
+.glass-input {
+  @apply glass px-4 py-3 text-white placeholder-gray-300 border-none outline-none;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.glass-input:focus {
+  background: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.3);
+}
+
+/* Audio Player Specific Styles */
+.audio-player {
+  @apply glass-card max-w-md mx-auto;
+  background: rgba(255, 255, 255, 0.12);
+  min-height: 400px;
+}
+
+.audio-controls {
+  @apply flex items-center justify-center space-x-4 mb-6;
+}
+
+.control-button {
+  @apply glass-button w-12 h-12 rounded-full flex items-center justify-center;
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.control-button:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: scale(1.1);
+}
+
+.play-button {
+  @apply control-button w-16 h-16;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.play-button:hover {
+  background: linear-gradient(135deg, #5a67d8 0%, #6b46c1 100%);
+}
+
+/* Progress Bar Styles */
+.progress-container {
+  @apply relative w-full h-2 mb-4 cursor-pointer;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.progress-bar {
+  @apply h-full transition-all duration-300;
+  background: linear-gradient(90deg, #4facfe 0%, #00f2fe 100%);
+  border-radius: 4px;
+}
+
+.progress-thumb {
+  @apply absolute top-1/2 w-4 h-4 -mt-2 -ml-2 rounded-full cursor-pointer transition-all duration-200;
+  background: #ffffff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.progress-thumb:hover {
+  transform: scale(1.2);
+}
+
+/* Visualizer Styles */
+.visualizer {
+  @apply w-full h-32 mb-6 relative overflow-hidden rounded-lg;
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.visualizer-bar {
+  @apply inline-block w-1 bg-gradient-to-t from-blue-400 to-purple-500 mr-1 rounded-t;
+  transition: height 0.1s ease;
+}
+
+.visualizer-canvas {
+  @apply w-full h-full;
+}
+
+/* Upload Area Styles */
+.upload-area {
+  @apply glass-card border-2 border-dashed border-white/30 text-center cursor-pointer transition-all duration-300;
+  min-height: 200px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.upload-area:hover {
+  border-color: rgba(255, 255, 255, 0.5);
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.upload-area.dragover {
+  border-color: #4facfe;
+  background: rgba(79, 172, 254, 0.1);
+  transform: scale(1.02);
+}
+
+/* Track Info Styles */
+.track-info {
+  @apply text-center mb-6;
+}
+
+.track-title {
+  @apply text-xl font-bold text-white mb-2;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.track-artist {
+  @apply text-gray-200 opacity-80;
+}
+
+.track-duration {
+  @apply text-sm text-gray-300 flex justify-between mt-2;
+}
+
+/* Animation Classes */
+.fade-in {
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+.slide-up {
+  animation: slideUp 0.5s ease-out;
+}
+
+.pulse-scale {
+  animation: pulseScale 2s ease-in-out infinite;
+}
+
+.rotate-slow {
+  animation: rotateSlow 20s linear infinite;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulseScale {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+@keyframes rotateSlow {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Loading States */
+.loading-spinner {
+  @apply inline-block w-6 h-6 border-2 border-white border-t-transparent rounded-full;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.loading-pulse {
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .audio-player {
+    @apply mx-4 p-4;
+    min-height: 350px;
+  }
+  
+  .control-button {
+    @apply w-10 h-10;
+  }
+  
+  .play-button {
+    @apply w-14 h-14;
+  }
+  
+  .visualizer {
+    @apply h-24;
+  }
+  
+  .upload-area {
+    min-height: 150px;
+  }
+}
+
+@media (max-width: 480px) {
+  .audio-controls {
+    @apply space-x-2;
+  }
+  
+  .glass-card {
+    @apply p-4;
+  }
+  
+  .track-title {
+    @apply text-lg;
+  }
+}
+
+/* Focus States for Accessibility */
+.glass-button:focus,
+.control-button:focus {
+  outline: 2px solid rgba(255, 255, 255, 0.5);
+  outline-offset: 2px;
+}
+
+.glass-input:focus {
+  outline: 2px solid rgba(79, 172, 254, 0.8);
+  outline-offset: 2px;
+}
+
+/* High Contrast Mode Support */
+@media (prefers-contrast: high) {
+  :root {
+    --glass-bg: rgba(0, 0, 0, 0.8);
+    --glass-border: rgba(255, 255, 255, 0.8);
+  }
+  
+  .glass {
+    border-width: 2px;
+  }
+}
+
+/* Reduced Motion Support */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  
+  .rotate-slow {
+    animation: none;
+  }
+}
+
+/* Print Styles */
+@media print {
+  body {
+    background: white;
+    color: black;
+  }
+  
+  .glass,
+  .glass-card,
+  .glass-button {
+    background: white;
+    border: 1px solid black;
+    box-shadow: none;
+  }
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.5);
+}
+
+/* Selection Styling */
+::selection {
+  background: rgba(79, 172, 254, 0.3);
+  color: white;
+}
+
+::-moz-selection {
+  background: rgba(79, 172, 254, 0.3);
+  color: white;
+}
