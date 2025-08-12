@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    <!-- SEO Meta Tags -->
+    <title>Create Create Create - Advanced MP3 Player</title>
+    <meta name="description" content="A beautiful glassmorphism MP3 player with upload capabilities, audio visualization, and local storage. Built with React and modern web technologies." />
+    <meta name="keywords" content="mp3 player, audio player, music player, audio visualization, glassmorphism, React" />
+    <meta name="author" content="Create Create Create" />
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://create-create-create.vercel.app/" />
+    <meta property="og:title" content="Create Create Create - Advanced MP3 Player" />
+    <meta property="og:description" content="A beautiful glassmorphism MP3 player with upload capabilities, audio visualization, and local storage." />
+    <meta property="og:image" content="https://via.placeholder.com/1200x630/667eea/ffffff?text=Create+Create+Create+MP3+Player" />
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://create-create-create.vercel.app/" />
+    <meta property="twitter:title" content="Create Create Create - Advanced MP3 Player" />
+    <meta property="twitter:description" content="A beautiful glassmorphism MP3 player with upload capabilities, audio visualization, and local storage." />
+    <meta property="twitter:image" content="https://via.placeholder.com/1200x630/667eea/ffffff?text=Create+Create+Create+MP3+Player" />
+    
+    <!-- Favicon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    
+    <!-- Theme Color -->
+    <meta name="theme-color" content="#667eea" />
+    <meta name="msapplication-TileColor" content="#667eea">
+    
+    <!-- Preconnect to external domains -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Prevent FOUC -->
+    <style>
+      html {
+        visibility: hidden;
+        opacity: 0;
+      }
+    </style>
+    
+    <!-- Performance optimizations -->
+    <link rel="dns-prefetch" href="//fonts.googleapis.com">
+    <link rel="dns-prefetch" href="//fonts.gstatic.com">
+    
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "Create Create Create MP3 Player",
+      "description": "A beautiful glassmorphism MP3 player with upload capabilities, audio visualization, and local storage.",
+      "url": "https://create-create-create.vercel.app/",
+      "applicationCategory": "MultimediaApplication",
+      "operatingSystem": "Web Browser",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      }
+    }
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+    
+    <!-- Show content after JavaScript loads -->
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        document.documentElement.style.visibility = 'visible';
+        document.documentElement.style.opacity = '1';
+      });
+    </script>
+    
+    <!-- Service Worker Registration -->
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', function() {
+          navigator.serviceWorker.register('/sw.js')
+            .then(function(registration) {
+              console.log('SW registered: ', registration);
+            })
+            .catch(function(registrationError) {
+              console.log('SW registration failed: ', registrationError);
+            });
+        });
+      }
+    </script>
+  </body>
+</html>
