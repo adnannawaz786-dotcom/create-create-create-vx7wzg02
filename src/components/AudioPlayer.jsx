@@ -41,7 +41,7 @@ const AudioPlayer = ({ playlist = [], currentTrackIndex = 0, onTrackChange }) =>
   const initializeAudioVisualization = async () => {
     try {
       if (!audioContextRef.current) {
-        audioContextRef.current = createAudioContext();
+        audioContextRef.current = initializeAudioContext();
         analyzerRef.current = createAnalyzer(audioContextRef.current);
       }
 
