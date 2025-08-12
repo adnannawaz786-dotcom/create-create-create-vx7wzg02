@@ -4,7 +4,12 @@ import { Play, Pause, SkipBack, SkipForward, Volume2, VolumeX, Repeat, Shuffle }
 import { Button } from '@/components/ui/button';
 import { Slider } from '@/components/ui/slider';
 import { Card } from '@/components/ui/card';
-import { initializeAudioContext, drawVisualization } from '@/lib/audio-utils';
+import {
+  initializeAudioContext,
+  connectAudioElement,
+  getAudioData,
+  drawVisualization,
+} from '@/lib/audio-utils';
 
 const AudioPlayer = ({ playlist = [], currentTrackIndex = 0, onTrackChange }) => {
   const [isPlaying, setIsPlaying] = useState(false);
@@ -20,13 +25,11 @@ const AudioPlayer = ({ playlist = [], currentTrackIndex = 0, onTrackChange }) =>
   const audioRef = useRef(null);
   const canvasRef = useRef(null);
   const audioContextRef = useRef(null);
-  const analyzerRef = useRef(null);
-  const sourceRef = useRef(null);
   const animationRef = useRef(null);
 
   const currentTrack = playlist[currentTrackIndex];
 
-  // Initialize audio context and analyzer
+  // Initialize Audio Context and connect audio element
   useEffect(() => {
     if (currentTrack && audioRef.current) {
       initializeAudioVisualization();
@@ -38,17 +41,13 @@ const AudioPlayer = ({ playlist = [], currentTrackIndex = 0, onTrackChange }) =>
     };
   }, [currentTrack]);
 
-  const initializeAudioVisualization = async () => {
+  const initializeAudioVisualization = () => {
     try {
       if (!audioContextRef.current) {
         audioContextRef.current = initializeAudioContext();
-        analyzerRef.current = createAnalyzer(audioContextRef.current);
       }
-
-      if (!sourceRef.current && audioRef.current) {
-        sourceRef.current = audioContextRef.current.createMediaElementSource(audioRef.current);
-        sourceRef.current.connect(analyzerRef.current);
-        analyzerRef.current.connect(audioContextRef.current.destination);
+      if (audioRef.current) {
+        connectAudioElement(audioRef.current);
       }
     } catch (err) {
       console.error('Error initializing audio visualization:', err);
@@ -56,18 +55,19 @@ const AudioPlayer = ({ playlist = [], currentTrackIndex = 0, onTrackChange }) =>
   };
 
   const startVisualization = () => {
-    if (!analyzerRef.current || !canvasRef.current) return;
+    if (!canvasRef.current) return;
 
     const canvas = canvasRef.current;
     const ctx = canvas.getContext('2d');
-    
+
     const animate = () => {
       if (isPlaying) {
-        drawVisualization(analyzerRef.current, ctx, canvas.width, canvas.height);
+        const audioData = getAudioData();
+        drawVisualization(canvas, audioData, 'bars'); // or 'wave', 'circle', etc.
         animationRef.current = requestAnimationFrame(animate);
       }
     };
-    
+
     animate();
   };
 
@@ -154,27 +154,27 @@ const AudioPlayer = ({ playlist = [], currentTrackIndex = 0, onTrackChange }) =>
 
   const handleNext = () => {
     if (playlist.length === 0) return;
-    
+
     let nextIndex;
     if (isShuffle) {
       nextIndex = Math.floor(Math.random() * playlist.length);
     } else {
       nextIndex = (currentTrackIndex + 1) % playlist.length;
     }
-    
+
     onTrackChange?.(nextIndex);
   };
 
   const handlePrevious = () => {
     if (playlist.length === 0) return;
-    
+
     let prevIndex;
     if (isShuffle) {
       prevIndex = Math.floor(Math.random() * playlist.length);
     } else {
       prevIndex = currentTrackIndex === 0 ? playlist.length - 1 : currentTrackIndex - 1;
     }
-    
+
     onTrackChange?.(prevIndex);
   };
 
@@ -241,7 +241,7 @@ const AudioPlayer = ({ playlist = [], currentTrackIndex = 0, onTrackChange }) =>
 
         {/* Track Info */}
         <div className="text-center mb-6">
-          <motion.h2 
+          <motion.h2
             key={currentTrack?.name}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -292,7 +292,7 @@ const AudioPlayer = ({ playlist = [], currentTrackIndex = 0, onTrackChange }) =>
         <div className="flex items-center justify-center gap-4 mb-6">
           <Button
             onClick={() => setIsShuffle(!isShuffle)}
-            variant={isShuffle ? "default" : "ghost"}
+            variant={isShuffle ? 'default' : 'ghost'}
             size="sm"
             className="text-white hover:bg-white/20"
             disabled={playlist.length <= 1}
@@ -337,7 +337,7 @@ const AudioPlayer = ({ playlist = [], currentTrackIndex = 0, onTrackChange }) =>
 
           <Button
             onClick={() => setIsRepeat(!isRepeat)}
-            variant={isRepeat ? "default" : "ghost"}
+            variant={isRepeat ? 'default' : 'ghost'}
             size="sm"
             className="text-white hover:bg-white/20"
           >
@@ -359,7 +359,7 @@ const AudioPlayer = ({ playlist = [], currentTrackIndex = 0, onTrackChange }) =>
               <Volume2 className="w-4 h-4" />
             )}
           </Button>
-          
+
           <Slider
             value={[isMuted ? 0 : volume * 100]}
             onValueChange={handleVolumeChange}
